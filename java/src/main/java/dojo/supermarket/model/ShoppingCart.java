@@ -27,20 +27,18 @@ public class ShoppingCart {
 
     void handleOffers(Receipt receipt, Map<Product, Offer> offers, SupermarketCatalog catalog) {
         for (ProductQuantity productQuantity : productQuantities) {
-            Product p = productQuantity.getProduct();
-            double quantity = productQuantity.getQuantity();
-            if (offers.containsKey(p)) {
-                Offer offer = offers.get(p);
-                double unitPrice = catalog.getUnitPrice(p);
+            if (offers.containsKey(productQuantity.getProduct())) {
+                Offer offer = offers.get(productQuantity.getProduct());
+                double unitPrice = catalog.getUnitPrice(productQuantity.getProduct());
                 Discount discount = null;
                 if (offer.offerType == SpecialOfferType.TwoForAmount) {
-                    discount = handleForAmountOffer(2, p, quantity, offer, unitPrice);
+                    discount = handleForAmountOffer(2, productQuantity, offer, unitPrice);
                 } else if (offer.offerType == SpecialOfferType.FiveForAmount) {
-                    discount = handleForAmountOffer(5, p, quantity, offer, unitPrice);
+                    discount = handleForAmountOffer(5, productQuantity, offer, unitPrice);
                 } else if (offer.offerType == SpecialOfferType.ThreeForTwo) {
-                    discount = handleThreeForTwo(p, quantity, unitPrice);
+                    discount = handleThreeForTwo(productQuantity, unitPrice);
                 } else if (offer.offerType == SpecialOfferType.TenPercentDiscount) {
-                    discount = handlePercentDiscount(p, quantity, offer, unitPrice);
+                    discount = handlePercentDiscount(productQuantity, offer, unitPrice);
                 }
                 if (discount != null)
                     receipt.addDiscount(discount);
@@ -48,30 +46,29 @@ public class ShoppingCart {
         }
     }
 
-
-    Discount handleForAmountOffer(int x, Product p, double quantity, Offer offer, double unitPrice) {
-        int quantityAsInt = (int) quantity;
+    private Discount handleForAmountOffer(int x, ProductQuantity productQuantity, Offer offer, double unitPrice) {
+        int quantityAsInt = (int) productQuantity.getQuantity();
         if (quantityAsInt >= x) {
             int intDivision = quantityAsInt / x;
             double pricePerUnit = offer.argument * intDivision;
             double theTotal = (quantityAsInt % x) * unitPrice;
             double total = pricePerUnit + theTotal;
-            double discount = unitPrice * quantity - total;
-            return new Discount(p, x + " for " + offer.argument, -discount);
+            double discount = unitPrice * productQuantity.getQuantity() - total;
+            return new Discount(productQuantity.getProduct(), x + " for " + offer.argument, -discount);
         }
         return null;
     }
 
-    Discount handlePercentDiscount(Product p, double quantity, Offer offer, double unitPrice) {
-        return new Discount(p, offer.argument + "% off", -quantity * unitPrice * offer.argument / 100.0);
+    private Discount handlePercentDiscount(ProductQuantity productQuantity, Offer offer, double unitPrice) {
+        return new Discount(productQuantity.getProduct(), offer.argument + "% off", -productQuantity.getQuantity() * unitPrice * offer.argument / 100.0);
     }
 
-    Discount handleThreeForTwo(Product p, double quantity, double unitPrice) {
-        int quantityAsInt = (int) quantity;
+    private Discount handleThreeForTwo(ProductQuantity productQuantity, double unitPrice) {
+        int quantityAsInt = (int) productQuantity.getQuantity();
         if (quantityAsInt > 2) {
             int intDivision = quantityAsInt / 3;
-            double discountAmount = quantity * unitPrice - ((intDivision * 2 * unitPrice) + quantityAsInt % 3 * unitPrice);
-            return new Discount(p, "3 for 2", -discountAmount);
+            double discountAmount = productQuantity.getQuantity() * unitPrice - ((intDivision * 2 * unitPrice) + quantityAsInt % 3 * unitPrice);
+            return new Discount(productQuantity.getProduct(), "3 for 2", -discountAmount);
         }
         return null;
     }
