@@ -1,41 +1,34 @@
 package dojo.supermarket.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ShoppingCart {
 
-    private final List<ProductQuantity> items = new ArrayList<>();
-    Map<Product, Double> productQuantities = new HashMap<>();
+    private final List<ProductQuantity> productQuantities = new ArrayList<>();
+    private final Set<Product> addedProducts = new HashSet<>();
 
-
-    List<ProductQuantity> getItems() {
-        return new ArrayList<>(items);
+    public List<ProductQuantity> getProductQuantities() {
+        return new ArrayList<>(productQuantities);
     }
 
-    void addItem(Product product) {
+    public void addItem(Product product) {
         this.addItemQuantity(product, 1.0);
     }
 
-    Map<Product, Double> productQuantities() {
-        return productQuantities;
-    }
-
-
     public void addItemQuantity(Product product, double quantity) {
-        items.add(new ProductQuantity(product, quantity));
-        if (productQuantities.containsKey(product)) {
-            productQuantities.put(product, productQuantities.get(product) + quantity);
+        if (addedProducts.contains(product)) {
+            productQuantities.stream().filter(productQuantity -> productQuantity.getProduct().equals(product))
+                    .findFirst().get().addQuantity(quantity);
         } else {
-            productQuantities.put(product, quantity);
+            productQuantities.add(new ProductQuantity(product, quantity));
+            addedProducts.add(product);
         }
     }
 
     void handleOffers(Receipt receipt, Map<Product, Offer> offers, SupermarketCatalog catalog) {
-        for (Product p : productQuantities().keySet()) {
-            double quantity = productQuantities.get(p);
+        for (ProductQuantity productQuantity : productQuantities) {
+            Product p = productQuantity.getProduct();
+            double quantity = productQuantity.getQuantity();
             if (offers.containsKey(p)) {
                 Offer offer = offers.get(p);
                 double unitPrice = catalog.getUnitPrice(p);

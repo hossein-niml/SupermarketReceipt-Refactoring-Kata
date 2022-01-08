@@ -1,10 +1,8 @@
 package dojo.supermarket.model;
 
-import java.util.Objects;
-
 public class ProductQuantity {
     private final Product product;
-    private final double quantity;
+    private double quantity;
 
     public ProductQuantity(Product product, double weight) {
         this.product = product;
@@ -17,5 +15,9 @@ public class ProductQuantity {
 
     public double getQuantity() {
         return quantity;
+    }
+
+    public void addQuantity(double quantity) {
+        this.quantity += quantity;
     }
 }
