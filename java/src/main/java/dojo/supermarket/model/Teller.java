@@ -25,7 +25,7 @@ public class Teller {
             double quantity = pq.getQuantity();
             double unitPrice = this.catalog.getUnitPrice(p);
             double price = quantity * unitPrice;
-            receipt.addProduct(p, quantity, unitPrice, price);
+            receipt.addProduct(pq, unitPrice, price);
         }
         theCart.handleOffers(receipt, this.offers, this.catalog);
 

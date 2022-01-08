@@ -55,6 +55,7 @@ public class ShoppingCart {
         }
     }
 
+
     Discount handleForAmountOffer(int x, Product p, double quantity, Offer offer, double unitPrice) {
         int quantityAsInt = (int) quantity;
         if (quantityAsInt >= x) {

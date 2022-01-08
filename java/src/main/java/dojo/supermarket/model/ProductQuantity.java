@@ -1,5 +1,7 @@
 package dojo.supermarket.model;
 
+import java.util.Objects;
+
 public class ProductQuantity {
     private final Product product;
     private final double quantity;

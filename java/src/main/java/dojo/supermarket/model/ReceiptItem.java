@@ -3,14 +3,12 @@ package dojo.supermarket.model;
 import java.util.Objects;
 
 public class ReceiptItem {
-    private final Product product;
+    private ProductQuantity productQuantity;
     private final double price;
     private double totalPrice;
-    private final double quantity;
 
-    public ReceiptItem(Product p, double quantity, double price, double totalPrice) {
-        this.product = p;
-        this.quantity = quantity;
+    public ReceiptItem(ProductQuantity productQuantity, double price, double totalPrice) {
+        this.productQuantity = productQuantity;
         this.price = price;
         this.totalPrice = totalPrice;
     }
@@ -20,11 +18,11 @@ public class ReceiptItem {
     }
 
     public Product getProduct() {
-        return product;
+        return productQuantity.getProduct();
     }
 
     public double getQuantity() {
-        return quantity;
+        return productQuantity.getQuantity();
     }
 
     public double getTotalPrice() {
@@ -38,14 +36,14 @@ public class ReceiptItem {
         ReceiptItem that = (ReceiptItem) o;
         return Double.compare(that.price, price) == 0 &&
                 Double.compare(that.totalPrice, totalPrice) == 0 &&
-                Double.compare(that.quantity, quantity) == 0 &&
-                Objects.equals(product, that.product);
+                Double.compare(that.productQuantity.getQuantity(), this.productQuantity.getQuantity()) == 0 &&
+                Objects.equals(that.productQuantity.getProduct(), this.productQuantity.getProduct());
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(product, price, totalPrice, quantity);
+        return Objects.hash(getProduct(), price, totalPrice, getQuantity());
     }
 
 
