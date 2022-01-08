@@ -3,18 +3,18 @@ package dojo.supermarket.model;
 import java.util.Objects;
 
 public class ReceiptItem {
-    private ProductQuantity productQuantity;
+    private final double unitPrice;
+    private final ProductQuantity productQuantity;
     private final double price;
-    private double totalPrice;
 
-    public ReceiptItem(ProductQuantity productQuantity, double price, double totalPrice) {
+    public ReceiptItem(ProductQuantity productQuantity, double unitPrice, double price) {
         this.productQuantity = productQuantity;
+        this.unitPrice = unitPrice;
         this.price = price;
-        this.totalPrice = totalPrice;
     }
 
-    public double getPrice() {
-        return this.price;
+    public double getUnitPrice() {
+        return this.unitPrice;
     }
 
     public Product getProduct() {
@@ -25,8 +25,8 @@ public class ReceiptItem {
         return productQuantity.getQuantity();
     }
 
-    public double getTotalPrice() {
-        return totalPrice;
+    public double getPrice() {
+        return this.price;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class ReceiptItem {
         if (o == null || getClass() != o.getClass()) return false;
         ReceiptItem that = (ReceiptItem) o;
         return Double.compare(that.price, price) == 0 &&
-                Double.compare(that.totalPrice, totalPrice) == 0 &&
+                Double.compare(that.unitPrice, unitPrice) == 0 &&
                 Double.compare(that.getQuantity(), this.getQuantity()) == 0 &&
                 Objects.equals(that.getProduct(), this.getProduct());
     }
@@ -43,7 +43,7 @@ public class ReceiptItem {
     @Override
     public int hashCode() {
 
-        return Objects.hash(getProduct(), price, totalPrice, getQuantity());
+        return Objects.hash(getProduct(), unitPrice, price, getQuantity());
     }
 
 
