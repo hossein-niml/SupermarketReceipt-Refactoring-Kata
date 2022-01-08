@@ -1,6 +1,9 @@
 package dojo.supermarket;
 
-import dojo.supermarket.model.*;
+import dojo.supermarket.model.Discount;
+import dojo.supermarket.model.ProductUnit;
+import dojo.supermarket.model.Receipt;
+import dojo.supermarket.model.ReceiptItem;
 
 import java.util.Locale;
 
@@ -14,6 +17,16 @@ public class ReceiptPrinter {
 
     public ReceiptPrinter(int columns) {
         this.columns = columns;
+    }
+
+    private static String presentPrice(double price) {
+        return String.format(Locale.UK, "%.2f", price);
+    }
+
+    private static String presentQuantity(ReceiptItem item) {
+        return ProductUnit.Each.equals(item.getProduct().getUnit())
+                ? String.format("%x", (int) item.getQuantity())
+                : String.format(Locale.UK, "%.3f", item.getQuantity());
     }
 
     public String printReceipt(Receipt receipt) {
@@ -67,16 +80,6 @@ public class ReceiptPrinter {
         line.append(value);
         line.append('\n');
         return line.toString();
-    }
-
-    private static String presentPrice(double price) {
-        return String.format(Locale.UK, "%.2f", price);
-    }
-
-    private static String presentQuantity(ReceiptItem item) {
-        return ProductUnit.Each.equals(item.getProduct().getUnit())
-                ? String.format("%x", (int)item.getQuantity())
-                : String.format(Locale.UK, "%.3f", item.getQuantity());
     }
 
 }

@@ -19,8 +19,8 @@ public class Teller {
 
     public Receipt checksOutArticlesFrom(ShoppingCart theCart) {
         Receipt receipt = new Receipt();
-        List<ProductQuantity> productQuantities = theCart.getProductQuantities();
-        for (ProductQuantity pq: productQuantities) {
+        List<ProductQuantity> productQuantities = theCart.getItems();
+        for (ProductQuantity pq : productQuantities) {
             Product p = pq.getProduct();
             double quantity = pq.getQuantity();
             double unitPrice = this.catalog.getUnitPrice(p);
