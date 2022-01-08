@@ -69,7 +69,7 @@ public class ShoppingCart {
     Discount handleThreeForTwo(Product p, double quantity, double unitPrice) {
         int quantityAsInt = (int) quantity;
         if (quantityAsInt > 2) {
-            int intDivision = quantityAsInt / 2;
+            int intDivision = quantityAsInt / 3;
             double discountAmount = quantity * unitPrice - ((intDivision * 2 * unitPrice) + quantityAsInt % 3 * unitPrice);
             return new Discount(p, "3 for 2", -discountAmount);
         }
