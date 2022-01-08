@@ -36,8 +36,8 @@ public class ReceiptItem {
         ReceiptItem that = (ReceiptItem) o;
         return Double.compare(that.price, price) == 0 &&
                 Double.compare(that.totalPrice, totalPrice) == 0 &&
-                Double.compare(that.productQuantity.getQuantity(), this.productQuantity.getQuantity()) == 0 &&
-                Objects.equals(that.productQuantity.getProduct(), this.productQuantity.getProduct());
+                Double.compare(that.getQuantity(), this.getQuantity()) == 0 &&
+                Objects.equals(that.getProduct(), this.getProduct());
     }
 
     @Override
